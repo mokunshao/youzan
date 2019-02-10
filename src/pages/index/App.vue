@@ -288,19 +288,24 @@
 </template>
 
 <script>
+import "../../modules/css/common.css";
+import "./index.css";
 import axios from "axios";
-import {url} from "../../modules/js/api.js";
+import { url } from "../../modules/js/api.js";
 
 axios
   .post(url.hotLists, {
     pageNum: 1,
     pageSize: 6
   })
-  .then(res => {
-    console.log(res);
-  },res => {
-    console.log(res);
-  });
+  .then(
+    res => {
+      console.log(res);
+    },
+    res => {
+      console.log(res);
+    }
+  );
 
 export default {
   data() {
