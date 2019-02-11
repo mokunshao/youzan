@@ -56,7 +56,22 @@
         </div>
         <div class="hot-goods js-waterfull-wrap" data-src>
           <ul class="js-list js-lazy" data-src>
-            <li>
+            <li v-for="item in list" :key="item.id">
+              <div class="goods-item">
+                <a
+                  href="https://h5.youzan.com/v2/showcase/goods?alias=2fwig6rnqfq6m&amp;source=yzapp&amp;f_platform=yzapp"
+                >
+                  <div class="thumb img-box">
+                    <img class="fadeIn" :src="item.img">
+                  </div>
+                  <div class="detail">
+                    <div class="title">{{item.name}}</div>
+                    <div class="price">￥{{item.price}}</div>
+                  </div>
+                </a>
+              </div>
+            </li>
+            <!-- <li>
               <div class="goods-item">
                 <a
                   href="https://h5.youzan.com/v2/showcase/goods?alias=2fwig6rnqfq6m&amp;source=yzapp&amp;f_platform=yzapp"
@@ -73,8 +88,8 @@
                   </div>
                 </a>
               </div>
-            </li>
-            <li>
+            </li>-->
+            <!-- <li>
               <div class="goods-item">
                 <a
                   href="https://h5.youzan.com/v2/showcase/goods?alias=365dgchyzdtxe&amp;source=yzapp&amp;f_platform=yzapp"
@@ -247,7 +262,7 @@
                   </div>
                 </a>
               </div>
-            </li>
+            </li>-->
           </ul>
           <div class="loading-more">
             <span></span>
@@ -291,27 +306,26 @@
 import "../../modules/css/common.css";
 import "./index.css";
 import axios from "axios";
-import { url } from "../../modules/js/api.js";
-
-axios
-  .post(url.hotLists, {
-    pageNum: 1,
-    pageSize: 6
-  })
-  .then(
-    res => {
-      console.log(res);
-    },
-    res => {
-      console.log(res);
-    }
-  );
+// import { url } from "../../modules/js/api.js";
 
 export default {
   data() {
     return {
       list: null
     };
+  },
+  created() {
+    axios
+      .post(
+        "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/index/hotLists",
+        {
+          pageNum: 1,
+          pageSize: 6
+        }
+      )
+      .then(res => {
+        this.list = res.data.list;
+      });
   }
 };
 </script>
