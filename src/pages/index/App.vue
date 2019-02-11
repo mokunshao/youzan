@@ -60,7 +60,7 @@
             data-src
             v-infinite-scroll="getLists"
             infinite-scroll-disabled="loading"
-            infinite-scroll-distance="10"
+            infinite-scroll-distance="0"
           >
             <li v-for="(item,index) in list" :key="index">
               <div class="goods-item">
@@ -84,34 +84,7 @@
         </div>
         <div class="js-show-find category-guid" style="display: none;"></div>
       </div>
-    </div>
-    <div class="bottom-nav">
-      <ul>
-        <li class="active">
-          <a href="https://maijia.youzan.com/mars/homepage">
-            <i class="icon-home"></i>
-            <div>有赞</div>
-          </a>
-        </li>
-        <li>
-          <a href="https://maijia.youzan.com/mars/category">
-            <i class="icon-category"></i>
-            <div>分类</div>
-          </a>
-        </li>
-        <li>
-          <a href="https://h5.youzan.com/v2/trade/cart?f_platform=yzapp&amp;source=yzapp">
-            <i class="icon-cart"></i>
-            <div>购物车</div>
-          </a>
-        </li>
-        <li>
-          <a href="https://h5.youzan.com/v2/buyer/member">
-            <i class="icon-user"></i>
-            <div>我</div>
-          </a>
-        </li>
-      </ul>
+      <Footer/>
     </div>
   </div>
 </template>
@@ -122,10 +95,14 @@ import "./index.css";
 import axios from "axios";
 import { InfiniteScroll } from "mint-ui";
 import Vue from "vue";
+import Footer from "../../components/Footer.vue";
 
 Vue.use(InfiniteScroll);
 
 export default {
+  components: {
+    Footer
+  },
   data() {
     return {
       list: null,
