@@ -3,20 +3,8 @@
     <div class="container with-bottom-nav" style="min-height: 667px;">
       <div class="content">
         <div class="js-image-swiper custom-image-swiper custom-image-swiper-single" data-images="1">
-          <div class="swiper-container">
-            <div class="swiper-wrapper">
-              <div class="swp-page">
-                <a class="js-no-follow" href="https://h5.koudaitong.com/v2/index/rukou">
-                  <img
-                    class="goods-main-photo fadeIn"
-                    src="https://img.yzcdn.cn/upload_files/2016/07/29/Fl3T06Mu7TpIhR4L1s2tzm8cZrgt.jpg"
-                  >
-                </a>
-              </div>
-            </div>
-          </div>
+          <Swiper :bannerList="bannerList" v-if="bannerList"/>
         </div>
-        <a href="https://maijia.youzan.com/mars/notice/detail?id=" class="notice"></a>
         <div class="section-title">优店推荐</div>
         <div class="section-content shops">
           <div class="shop-wrap">
@@ -96,12 +84,14 @@ import axios from "axios";
 import { InfiniteScroll } from "mint-ui";
 import Vue from "vue";
 import Footer from "../../components/Footer.vue";
+import Swiper from "../../components/Swiper.vue";
 
 Vue.use(InfiniteScroll);
 
 export default {
   components: {
-    Footer
+    Footer,
+    Swiper
   },
   data() {
     return {
@@ -109,7 +99,8 @@ export default {
       loading: false,
       pageNum: 0,
       allLoaded: false,
-      pageSize: 10
+      pageSize: 10,
+      bannerList: null
     };
   },
   methods: {
@@ -138,10 +129,20 @@ export default {
       } else {
         this.allLoaded = true;
       }
+    },
+    getBanner() {
+      axios
+        .get(
+          "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/index/banner"
+        )
+        .then(res => {
+          this.bannerList = res.data.bannerList;
+        });
     }
   },
-  created() {
+  mounted() {
     this.getLists();
+    this.getBanner();
   }
 };
 </script>
