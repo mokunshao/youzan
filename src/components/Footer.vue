@@ -2,14 +2,13 @@
   <div class="bottom-nav">
     <ul>
       <li class="active">
-        <!-- <a href="https://maijia.youzan.com/mars/homepage"> -->
         <a href="index.html">
           <i class="icon-home"></i>
           <div>有赞</div>
         </a>
       </li>
       <li>
-        <a href="https://maijia.youzan.com/mars/category">
+        <a href="category.html">
           <i class="icon-category"></i>
           <div>分类</div>
         </a>

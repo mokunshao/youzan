@@ -18,8 +18,7 @@ import "swiper/dist/css/swiper.css";
 export default {
   props: ["bannerList"],
   mounted() {
-    let mySwiper = new Swiper(".swiper-container", {
-      // direction: "vertical",
+    new Swiper(".swiper-container", {
       loop: true,
       pagination: {
         el: ".swiper-pagination"
