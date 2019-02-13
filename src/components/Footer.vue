@@ -14,13 +14,13 @@
         </a>
       </li>
       <li>
-        <a href="https://h5.youzan.com/v2/trade/cart?f_platform=yzapp&amp;source=yzapp">
+        <a href="cart.html">
           <i class="icon-cart"></i>
           <div>购物车</div>
         </a>
       </li>
       <li>
-        <a href="https://h5.youzan.com/v2/buyer/member">
+        <a href="member.html">
           <i class="icon-user"></i>
           <div>我</div>
         </a>

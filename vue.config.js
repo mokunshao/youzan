@@ -17,6 +17,18 @@ module.exports = {
       template: "src/pages/category/category.html",
       filename: "category.html",
       chunks: ["chunk-vendors", "chunk-common", "category"]
+    },
+    member: {
+      entry: "src/pages/member/member.js",
+      template: "src/pages/member/member.html",
+      filename: "member.html",
+      chunks: ["chunk-vendors", "chunk-common", "member"]
+    },
+    search: {
+      entry: "src/pages/search/search.js",
+      template: "src/pages/search/search.html",
+      filename: "search.html",
+      chunks: ["chunk-vendors", "chunk-common", "search"]
     }
   }
 };
