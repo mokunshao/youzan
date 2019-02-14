@@ -147,7 +147,8 @@ img {
 }
 
 .with-bottom-nav {
-  padding-bottom: 50px;
+  /* padding-bottom: 50px; */
+  padding-bottom: 60px;
   box-sizing: border-box
 }
 

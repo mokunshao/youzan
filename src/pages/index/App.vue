@@ -69,6 +69,7 @@
           <div class="loading-more" v-show="loading">
             <span></span>
           </div>
+          <div class="nothingLeft" v-if="pageNum===pageSize">没有更多商品了</div>
         </div>
         <div class="js-show-find category-guid" style="display: none;"></div>
       </div>
@@ -99,7 +100,7 @@ export default {
       loading: false,
       pageNum: 0,
       allLoaded: false,
-      pageSize: 10,
+      pageSize: 5,
       bannerList: null
     };
   },
@@ -148,4 +149,8 @@ export default {
 </script>
 
 <style>
+.nothingLeft{
+  text-align: center;
+  margin: 10px;
+}
 </style>

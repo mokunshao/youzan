@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container with-bottom-nav" style="">
+    <div class="container with-bottom-nav" style>
       <div class="custom-search js-search-bar">
         <form>
           <input
@@ -33,14 +33,10 @@
         </div>
       </div>
       <div class="search-content" style="display: none;"></div>
-      <div class="content" style="">
+      <div class="content" style>
         <div class="class-nav">
-          <div id="scroll-nav" style="">
-            <ul
-              class="nav"
-              id="scroll-nav-content"
-              style=" transform: translate3d(0px, 0px, 0px);"
-            >
+          <div id="scroll-nav" style>
+            <ul class="nav" id="scroll-nav-content" style=" transform: translate3d(0px, 0px, 0px);">
               <li
                 v-for="(item,index) in topList"
                 :key="index"
@@ -301,7 +297,12 @@
             >
               <h3 class="category-title">热门品牌</h3>
               <ul class="category-content">
-                <li class="category-item js-category-item" data-item-id="85" data-item-name="良品铺子">
+                <li
+                  class="category-item js-category-item"
+                  data-item-id="85"
+                  data-item-name="良品铺子"
+                  @click="goToSearch()"
+                >
                   <img
                     src="https://img.yzcdn.cn/o_1a2m590lg110p1mp21nr11ffmpsl9.jpg?imageView2/2/w/120/h/0/q/75/format/jpg"
                     alt="良品铺子"
@@ -309,7 +310,7 @@
                   >
                   <span class="category-item-name">良品铺子</span>
                 </li>
-                <li class="category-item js-category-item" data-item-id="83" data-item-name="周黑鸭">
+                <!-- <li class="category-item js-category-item" data-item-id="83" data-item-name="周黑鸭">
                   <img
                     src="https://img.yzcdn.cn/o_1a2m59s44mo61kid1ikd5mv1cc9.jpg?imageView2/2/w/120/h/0/q/75/format/jpg"
                     alt="周黑鸭"
@@ -348,11 +349,16 @@
                     class="category-img"
                   >
                   <span class="category-item-name">齐峰果业</span>
-                </li>
+                </li>-->
               </ul>
               <h3 class="category-title">热门分类</h3>
               <ul class="category-content">
-                <li class="category-item js-category-item" data-item-id="10" data-item-name="水果">
+                <li
+                  class="category-item js-category-item"
+                  data-item-id="10"
+                  data-item-name="水果"
+                  @click="goToSearch()"
+                >
                   <img
                     src="https://img.yzcdn.cn/upload_files/2015/12/28/Fk8hpTtgWFr_q7FCCGdzqXsOkYms.jpg?imageView2/2/w/120/h/0/q/75/format/jpg"
                     alt="水果"
@@ -360,7 +366,7 @@
                   >
                   <span class="category-item-name">水果</span>
                 </li>
-                <li class="category-item js-category-item" data-item-id="835" data-item-name="生鲜">
+                <!-- <li class="category-item js-category-item" data-item-id="835" data-item-name="生鲜">
                   <img
                     src="https://img.yzcdn.cn/upload_files/2015/12/28/FhUo5oH7FREcNyOQVNaSgeF3IHUw.jpg?imageView2/2/w/120/h/0/q/75/format/jpg"
                     alt="生鲜"
@@ -423,7 +429,7 @@
                     class="category-img"
                   >
                   <span class="category-item-name">营养保健品</span>
-                </li>
+                </li>-->
               </ul>
             </div>
           </div>
@@ -439,12 +445,16 @@ import "../../modules/css/common.css";
 import "./category.css";
 import Footer from "../../components/Footer.vue";
 import axios from "axios";
+import qs from "qs";
+
+let { keyword } = qs.parse(location.search.substring(1));
 
 export default {
   data() {
     return {
       topList: null,
-      topListIndex: 0
+      topListIndex: 0,
+      keyword: "dd"
     };
   },
   components: {
@@ -460,6 +470,9 @@ export default {
     },
     getSubList(index) {
       this.topListIndex = index;
+    },
+    goToSearch() {
+      location.href = `search.html?keword=`;
     }
   },
   mounted() {
