@@ -29,6 +29,12 @@ module.exports = {
       template: "src/pages/search/search.html",
       filename: "search.html",
       chunks: ["chunk-vendors", "chunk-common", "search"]
+    },
+    goods: {
+      entry: "src/pages/goods/goods.js",
+      template: "src/pages/goods/goods.html",
+      filename: "goods.html",
+      chunks: ["chunk-vendors", "chunk-common", "goods"]
     }
   }
 };
