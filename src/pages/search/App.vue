@@ -59,6 +59,8 @@
         </div>
       </div>
       <div
+        v-if="isShowGoToTop"
+        @click="goToTop"
         class="go-to-top"
         style="display: block; transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);"
       ></div>
@@ -71,6 +73,7 @@ import "./search.css";
 import "../../modules/css/common.css";
 import qs from "qs";
 import axios from "axios";
+import velocity from "velocity-animate";
 
 let { keyword } = qs.parse(location.search.substring(1));
 
@@ -78,21 +81,34 @@ export default {
   data() {
     return {
       keyword,
-      searchResult: null
+      searchResult: null,
+      isShowGoToTop: false
     };
   },
   mounted() {
     this.getSearchReasult(this.keyword);
+    window.addEventListener("scroll", this.move);
   },
   methods: {
     getSearchReasult(keyword) {
       axios
         .get(
-          `https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/search?keyword=${this.keyword}`
+          `https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/search?keyword=${keyword}`
         )
         .then(e => {
           this.searchResult = e.data;
         });
+    },
+    move() {
+      if (window.scrollY > 50) {
+        this.isShowGoToTop = true;
+      } else {
+        this.isShowGoToTop = false;
+      }
+    },
+    goToTop() {
+      // window.scrollTo(0, 0);
+      velocity(document.body, "scroll", { duration: 1000 });
     }
   }
 };

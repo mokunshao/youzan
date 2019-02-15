@@ -332,7 +332,7 @@ img {
 }
 
 .container {
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   position: relative;
   box-sizing: border-box
 }

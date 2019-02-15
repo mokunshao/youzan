@@ -121,7 +121,7 @@
                   </div>
                   <ul class="keywords-list" v-if="ranking">
                     <li v-for="(item,index) in ranking.topKeywords" :key="index">
-                      <a href="javascript:;" class="js-hot-keyword">{{item.keyword}}</a>
+                      <a href="javascript:;" class="js-hot-keyword" @click="goToSearch2(item.keyword)">{{item.keyword}}</a>
                     </li>
                   </ul>
                 </div>
