@@ -16,6 +16,7 @@ import Swiper from "swiper";
 import "swiper/dist/css/swiper.css";
 
 export default {
+  name: "Swiper",
   props: ["bannerList"],
   mounted() {
     new Swiper(".swiper-container", {
@@ -29,7 +30,7 @@ export default {
 </script>
 
 <style>
-.swiper-slide a{
+.swiper-slide a {
   width: 100%;
 }
 </style>

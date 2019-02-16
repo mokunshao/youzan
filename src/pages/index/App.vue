@@ -52,9 +52,7 @@
           >
             <li v-for="(item,index) in list" :key="index">
               <div class="goods-item">
-                <a
-                  href="https://h5.youzan.com/v2/showcase/goods?alias=2fwig6rnqfq6m&amp;source=yzapp&amp;f_platform=yzapp"
-                >
+                <a :href="'goods.html?id='+item.id">
                   <div class="thumb img-box">
                     <img class="fadeIn" :src="item.img">
                   </div>
@@ -149,7 +147,7 @@ export default {
 </script>
 
 <style>
-.nothingLeft{
+.nothingLeft {
   text-align: center;
   margin: 10px;
 }

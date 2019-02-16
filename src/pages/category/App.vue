@@ -67,9 +67,7 @@
                   </div>
                   <ul v-if="ranking">
                     <li class="goods-item" v-for="(item,index) in ranking.topGoods" :key="index">
-                      <a
-                        href="https://h5.youzan.com/v2/showcase/goods?alias=27cjv5wdsb4to&amp;source=yzapp&amp;f_platform=yzapp"
-                      >
+                      <a :href="'goods.html?id='+item.id">
                         <div class="thumb badge center-img">
                           <img :src="item.img">
                           <span class="num">{{index+1}}</span>
@@ -121,7 +119,11 @@
                   </div>
                   <ul class="keywords-list" v-if="ranking">
                     <li v-for="(item,index) in ranking.topKeywords" :key="index">
-                      <a href="javascript:;" class="js-hot-keyword" @click="goToSearch2(item.keyword)">{{item.keyword}}</a>
+                      <a
+                        href="javascript:;"
+                        class="js-hot-keyword"
+                        @click="goToSearch2(item.keyword)"
+                      >{{item.keyword}}</a>
                     </li>
                   </ul>
                 </div>
@@ -143,11 +145,7 @@
                   :data-item-name="item.name"
                   @click="goToSearch2(item.name)"
                 >
-                  <img
-                    :src="item.img"
-                    :alt="item.name"
-                    class="category-img"
-                  >
+                  <img :src="item.img" :alt="item.name" class="category-img">
                   <span class="category-item-name">{{item.name}}</span>
                 </li>
               </ul>
@@ -161,11 +159,7 @@
                   :data-item-name="item.name"
                   @click="goToSearch2(item.name)"
                 >
-                  <img
-                    :src="item.img"
-                    :alt="item.name"
-                    class="category-img"
-                  >
+                  <img :src="item.img" :alt="item.name" class="category-img">
                   <span class="category-item-name">{{item.name}}</span>
                 </li>
               </ul>
