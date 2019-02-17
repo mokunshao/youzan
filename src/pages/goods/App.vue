@@ -142,14 +142,9 @@
             <a class="js-show-more-btn icon show-more-btn hide"></a>
           </div>
             </div>-->
-            <div id="right-icon" class="js-right-icon">
+            <div id="right-icon" class="js-right-icon" v-show="isAddCart">
               <div class="js-right-icon-container right-icon-container clearfix">
-                <a
-                  id="global-cart"
-                  href="https://h5.youzan.com/v2/trade/cart?kdt_id=16546132"
-                  class="icon new s0"
-                  style
-                >
+                <a id="global-cart" :href="'cart.html?id='+id" class="icon new s0" style>
                   <p class="icon-img"></p>
                   <p class="icon-txt">购物车</p>
                 </a>
@@ -322,11 +317,11 @@
                 <dd class="sku-quantity-contaienr">
                   <dl class="clearfix">
                     <div class="quantity">
-                      <button class="minus disabled" type="button" disabled="true"></button>
-                      <input type="text" class="txt" pattern="[0-9]*" value="1">
+                      <button class="minus disabled" type="button" disabled="skuNum===1"></button>
+                      <input type="text" class="txt" pattern="[0-9]*" v-model="skuNum">
                       <button class="plus" type="button"></button>
-                      <div class="response-area response-area-minus"></div>
-                      <div class="response-area response-area-plus"></div>
+                      <div class="response-area response-area-minus" @click="changeSkuNum(-1)"></div>
+                      <div class="response-area response-area-plus" @click="changeSkuNum(1)"></div>
                     </div>
                   </dl>
                 </dd>
@@ -339,7 +334,7 @@
             <!-- <div class="bottom-padding"></div> -->
             <div class="confirm-action content-foot clearfix">
               <!-- 加入购物车 -->
-              <div class="big-btn-1-1" v-show="skuType===2">
+              <div class="big-btn-1-1" v-show="skuType===2" @click="addCart()">
                 <a href="javascript:;" class="js-confirm-it big-btn red-btn main-btn">加入购物车</a>
               </div>
               <!-- 立即购买 -->
@@ -347,7 +342,7 @@
                 <a href="javascript:;" class="js-confirm-it big-btn red-btn main-btn">下一步</a>
               </div>
               <!-- 选择规格 -->
-              <div class="big-btn-2-1" v-show="skuType===1">
+              <div class="big-btn-2-1" v-show="skuType===1" @click="addCart()">
                 <a
                   href="javascript:;"
                   class="js-mutiBtn-confirm cart big-btn orange-btn vice-btn"
@@ -361,14 +356,12 @@
           </div>
         </div>
       </transition>
-      <div class="motify" style="display: none;">
+      <div class="motify" v-show="showAddMessage">
         <div class="motify-inner">已成功添加到购物车</div>
       </div>
     </div>
-    <div v-else>
-      <div class="loading-more">
-        <span></span>
-      </div>
+    <div v-if="!detail" class="loading-more">
+      <span></span>
     </div>
   </div>
 </template>
@@ -400,7 +393,11 @@ export default {
       tabIndex: 0,
       deals: null,
       skuType: 1,
-      showSku: false
+      showSku: false,
+      skuNum: 1,
+      isAddCart: false,
+      showAddMessage: false,
+      id
     };
   },
   mounted() {
@@ -434,10 +431,32 @@ export default {
     chooseSku(type) {
       this.skuType = type;
       this.showSku = true;
+    },
+    changeSkuNum(num) {
+      if (num < 0 && this.skuNum === 0) return;
+      this.skuNum += num;
+    },
+    addCart() {
+      axios
+        .post(
+          "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/addCart",
+          { id, number: this.skuNum }
+        )
+        .then(e => {
+          if (e.data.status) {
+            this.chooseSku(2);
+            this.isAddCart = true;
+            this.showSku = false;
+            this.showAddMessage = true;
+            setTimeout(() => {
+              this.showAddMessage = false;
+            }, 2000);
+          }
+        });
     }
   },
   watch: {
-    showSku(val, oldVal) {
+    showSku(val) {
       document.body.style.overflow = val ? "hidden" : "auto";
       document.querySelector("html").style.overflow = val ? "hidden" : "auto";
       document.body.style.height = val ? "100%" : "auto";
