@@ -5,13 +5,14 @@
         <div id="cart-container">
           <div>
             <div class="js-shop-list shop-list">
-              <div class="block block-order block-cart">
+              <div class="block block-order block-cart" v-for="item in cartList" :key="item.shopId">
                 <div class="header">
                   <div class="select-group js-select-group">
-                    <span class="check checked"></span>
+                    <span class="check" :class="{checked:item.checked}"></span>
                   </div>
                   <a class="shop-title">
-                    <i class="custom-store-img">店铺：</i>寻找田野
+                    <i class="custom-store-img">店铺：</i>
+                    {{item.shopTitle}}
                   </a>
                   <a
                     href="javascript:;"
@@ -25,21 +26,21 @@
                 <!---->
                 <div>
                   <ul class="js-list block block-list block-list-cart border-0">
-                    <li class="block-item block-item-cart editing">
+                    <li
+                      class="block-item block-item-cart"
+                      v-for="good in item.goodsList "
+                      :key="good.id"
+                    >
                       <div>
                         <div class="check-container">
-                          <span class="check"></span>
+                          <span class="check" :class="{checked:good.checked}" @click="selectGood(good)"></span>
                         </div>
                         <div class="name-card clearfix">
                           <a
                             href="https://h5.youzan.com/v2/showcase/goods?alias=2oivacpjh2ex0"
                             class="thumb js-goods-link"
                           >
-                            <img
-                              data-src="https://img.yzcdn.cn/upload_files/2017/07/04/Fqp4EItsHaclmGQPBoMkR1qKmKGi.jpg!200x200.jpg"
-                              class="js-lazy"
-                              src="https://img.yzcdn.cn/upload_files/2017/07/04/Fqp4EItsHaclmGQPBoMkR1qKmKGi.jpg?imageView2/2/w/200/h/200/q/75/format/webp"
-                            >
+                            <img class="js-lazy" :src="good.img">
                             <!---->
                           </a>
                           <div class="detail">
@@ -48,17 +49,18 @@
                               class="js-goods-link"
                             >
                               <h3 class="title js-ellipsis">
-                                <i>江苏盱眙“花雕冰醉”小龙虾 口味独特 清甜爽口</i>
+                                <i>{{good.title}}</i>
                               </h3>
                             </a>
-                            <p class="sku ellipsis">7-9钱，总重1600g 净虾800g</p>
+                            <p class="sku ellipsis">{{good.sku}}</p>
                             <!-- 显示状态 -->
-                            <div class="num" style="display: none;">×
-                              <span class="num-txt">2</span>
+                            <div class="num">
+                              ×
+                              <span class="num-txt">{{good.num}}</span>
                               <!---->
                             </div>
                             <!-- 编辑状态 -->
-                            <div class="num">
+                            <div class="num" style="display: none;">
                               <!---->
                               <div class="quantity">
                                 <button type="button" class="minus disabled"></button>
@@ -68,115 +70,9 @@
                                 <div class="response-area response-area-plus"></div>
                               </div>
                             </div>
-                            <div class="price c-orange">¥
-                              <span>189.00</span>
-                            </div>
-                          </div>
-                          <div class="error-box"></div>
-                        </div>
-                        <div class="delete-btn">
-                          <span>删除</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="block-item block-item-cart">
-                      <div>
-                        <div class="check-container">
-                          <span class="check checked"></span>
-                        </div>
-                        <div class="name-card clearfix">
-                          <a
-                            href="https://h5.youzan.com/v2/showcase/goods?alias=1y7n2wi58q1as"
-                            class="thumb js-goods-link"
-                          >
-                            <img
-                              data-src="https://img.yzcdn.cn/upload_files/2017/07/12/FkSvYz8FLLD9-t0smXO43hF6ov7S.jpg!200x200.jpg"
-                              class="js-lazy"
-                              src="https://img.yzcdn.cn/upload_files/2017/07/12/FkSvYz8FLLD9-t0smXO43hF6ov7S.jpg?imageView2/2/w/200/h/200/q/75/format/webp"
-                            >
-                            <!---->
-                          </a>
-                          <div class="detail">
-                            <a
-                              href="https://h5.youzan.com/v2/showcase/goods?alias=1y7n2wi58q1as"
-                              class="js-goods-link"
-                            >
-                              <h3 class="title js-ellipsis">
-                                <i>寻找田野|最正宗的上海南汇8424 得奖最多奥运会指定西瓜1只/箱 9-11斤</i>
-                              </h3>
-                            </a>
-                            <p class="sku ellipsis">4500g-5000g</p>
-                            <div class="num">×
-                              <span class="num-txt">3</span>
-                              <!---->
-                            </div>
-                            <div class="price c-orange">¥
-                              <span>98.00</span>
-                            </div>
-                          </div>
-                          <div class="error-box"></div>
-                        </div>
-                        <div class="delete-btn">
-                          <span>删除</span>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="block block-order block-cart">
-                <div class="header">
-                  <div class="select-group js-select-group">
-                    <span class="check checked"></span>
-                  </div>
-                  <a class="shop-title">
-                    <i class="custom-store-img">店铺：</i>猫咪森林
-                  </a>
-                  <a
-                    href="javascript:;"
-                    data-type="cart"
-                    class="j-edit-list pull-right c-blue font-size-12 edit-list"
-                  >
-                    <!---->
-                    编辑
-                  </a>
-                </div>
-                <!---->
-                <div>
-                  <ul class="js-list block block-list block-list-cart border-0">
-                    <li class="block-item block-item-cart">
-                      <div>
-                        <div class="check-container">
-                          <span class="check checked"></span>
-                        </div>
-                        <div class="name-card clearfix">
-                          <a
-                            href="https://h5.youzan.com/v2/showcase/goods?alias=2orhx1x0k6mpg"
-                            class="thumb js-goods-link"
-                          >
-                            <img
-                              data-src="https://img.yzcdn.cn/upload_files/2017/07/03/FgvM-buQ1iwZoKjCv5J_K8_YMDlo.jpg!200x200.jpg"
-                              class="js-lazy"
-                              src="https://img.yzcdn.cn/upload_files/2017/07/03/FgvM-buQ1iwZoKjCv5J_K8_YMDlo.jpg?imageView2/2/w/200/h/200/q/75/format/webp"
-                            >
-                            <!---->
-                          </a>
-                          <div class="detail">
-                            <a
-                              href="https://h5.youzan.com/v2/showcase/goods?alias=2orhx1x0k6mpg"
-                              class="js-goods-link"
-                            >
-                              <h3 class="title js-ellipsis">
-                                <i>美翻了美爆了！值得ALL IN!炒鸡“温柔知性典雅温暖色”的8个色系！艺气息扑面而来！3CE MOOD RECIPE系列指甲油！</i>
-                              </h3>
-                            </a>
-                            <p class="sku ellipsis">BR05红棕色</p>
-                            <div class="num">×
-                              <span class="num-txt">1</span>
-                              <!---->
-                            </div>
-                            <div class="price c-orange">¥
-                              <span>12.99</span>
+                            <div class="price c-orange">
+                              ¥
+                              <span>{{good.price}}</span>
                             </div>
                           </div>
                           <div class="error-box"></div>
@@ -205,7 +101,6 @@
                           class="thumb js-goods-link"
                         >
                           <img
-                            data-src="https://img.yzcdn.cn/upload_files/2017/06/29/FstNOp77JZHQjZIDFd5LlZYE3j_j.jpg!200x200.jpg"
                             class="js-lazy"
                             src="https://img.yzcdn.cn/upload_files/2017/06/29/FstNOp77JZHQjZIDFd5LlZYE3j_j.jpg?imageView2/2/w/200/h/200/q/75/format/webp"
                           >
@@ -221,7 +116,8 @@
                             </h3>
                           </a>
                           <p class="sku ellipsis">下周二发货</p>
-                          <div class="num">×
+                          <div class="num">
+                            ×
                             <span class="num-txt">1</span>
                             <!---->
                           </div>
@@ -244,21 +140,23 @@
               <div class="go-shop-tip js-go-shop-tip c-orange font-size-12">你需要分开结算每个店铺的商品哦~</div>
               <div class="bottom-cart clear-fix">
                 <div class="select-all">
-                  <span class="check checked"></span> 全选
+                  <span class="check"></span> 全选
                 </div>
                 <!-- 显示状态 -->
-                <div class="total-price" style="display: none;">合计：¥
+                <div class="total-price">
+                  合计：¥
                   <span class="js-total-price" style="color: rgb(255, 102, 0);">684.99</span>
                   <p class="c-gray-dark">不含运费</p>
                 </div>
                 <button
                   href="javascript:;"
                   class="js-go-pay btn btn-orange-dark font-size-14"
-                  style="display: none;"
+                  disabled
                 >结算 (3)</button>
                 <!-- 编辑状态 -->
                 <button
                   href="javascript:;"
+                  style="display: none;"
                   disabled="disabled"
                   class="j-delete-goods btn font-size-14 btn-red"
                 >删除</button>
@@ -286,7 +184,40 @@ import "../../modules/css/common.css";
 import "./cart.css";
 import "./cart_base.css";
 import "./cart_trade.css";
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    return {
+      cartList: null
+    };
+  },
+  mounted() {
+    this.getCartList();
+  },
+  methods: {
+    getCartList() {
+      axios
+        .get(
+          "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/cart/list"
+        )
+        .then(e => {
+          let list = e.data.cartList;
+          list.forEach(item => {
+            item.checked = true;
+            item.goodsList.forEach(subItem => {
+              subItem.checked = true;
+            });
+          });
+          this.cartList = list;
+
+          // this.cartList = e.data.cartList;
+        });
+    },
+    selectGood(good) {
+      good.checked = !good.checked;
+    }
+  }
+};
 </script>
 
 <style>
