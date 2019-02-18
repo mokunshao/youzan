@@ -5,14 +5,15 @@
         <div id="cart-container">
           <div>
             <div class="js-shop-list shop-list">
-              <div class="block block-order block-cart" v-for="item in cartList" :key="item.shopId">
+              <div class="block block-order block-cart" v-for="shop in cartList" :key="shop.shopId"
+                   >
                 <div class="header">
                   <div class="select-group js-select-group">
-                    <span class="check" :class="{checked:item.checked}"></span>
+                    <span class="check" :class="{checked:shop.checked}" @click="selectShop(shop)"></span>
                   </div>
                   <a class="shop-title">
                     <i class="custom-store-img">店铺：</i>
-                    {{item.shopTitle}}
+                    {{shop.shopTitle}}
                   </a>
                   <a
                     href="javascript:;"
@@ -28,12 +29,12 @@
                   <ul class="js-list block block-list block-list-cart border-0">
                     <li
                       class="block-item block-item-cart"
-                      v-for="good in item.goodsList "
+                      v-for="good in shop.goodsList "
                       :key="good.id"
                     >
                       <div>
-                        <div class="check-container">
-                          <span class="check" :class="{checked:good.checked}" @click="selectGood(good)"></span>
+                        <div class="check-container" >
+                          <span class="check" :class="{checked:good.checked}"  @click="selectGood(shop,good)"></span>
                         </div>
                         <div class="name-card clearfix">
                           <a
@@ -41,7 +42,6 @@
                             class="thumb js-goods-link"
                           >
                             <img class="js-lazy" :src="good.img">
-                            <!---->
                           </a>
                           <div class="detail">
                             <a
@@ -140,7 +140,7 @@
               <div class="go-shop-tip js-go-shop-tip c-orange font-size-12">你需要分开结算每个店铺的商品哦~</div>
               <div class="bottom-cart clear-fix">
                 <div class="select-all">
-                  <span class="check"></span> 全选
+                  <span class="check" :class="{checked:allSelect}"></span> 全选
                 </div>
                 <!-- 显示状态 -->
                 <div class="total-price">
@@ -152,14 +152,16 @@
                   href="javascript:;"
                   class="js-go-pay btn btn-orange-dark font-size-14"
                   disabled
-                >结算 (3)</button>
+                >结算 (3)
+                </button>
                 <!-- 编辑状态 -->
                 <button
                   href="javascript:;"
                   style="display: none;"
                   disabled="disabled"
                   class="j-delete-goods btn font-size-14 btn-red"
-                >删除</button>
+                >删除
+                </button>
               </div>
             </div>
           </div>
@@ -180,44 +182,67 @@
 </template>
 
 <script>
-import "../../modules/css/common.css";
-import "./cart.css";
-import "./cart_base.css";
-import "./cart_trade.css";
-import axios from "axios";
-export default {
-  data() {
-    return {
-      cartList: null
-    };
-  },
-  mounted() {
-    this.getCartList();
-  },
-  methods: {
-    getCartList() {
-      axios
-        .get(
-          "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/cart/list"
-        )
-        .then(e => {
-          let list = e.data.cartList;
-          list.forEach(item => {
-            item.checked = true;
-            item.goodsList.forEach(subItem => {
-              subItem.checked = true;
-            });
-          });
-          this.cartList = list;
+  import "../../modules/css/common.css";
+  import "./cart.css";
+  import "./cart_base.css";
+  import "./cart_trade.css";
+  import axios from "axios";
 
-          // this.cartList = e.data.cartList;
-        });
+  export default {
+    data() {
+      return {
+        cartList: null
+      };
     },
-    selectGood(good) {
-      good.checked = !good.checked;
+    mounted() {
+      this.getCartList();
+    },
+    methods: {
+      getCartList() {
+        axios
+          .get(
+            "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/cart/list"
+          )
+          .then(e => {
+            let list = e.data.cartList;
+            list.forEach(shop => {
+              shop.checked = true;
+              shop.goodsList.forEach(good => {
+                good.checked = true;
+              });
+            });
+            this.cartList = list;
+          });
+      },
+      selectGood(shop, good) {
+        good.checked = !good.checked;
+        shop.checked = shop.goodsList.every((good) => {
+          return good.checked;
+        });
+      },
+      selectShop(shop) {
+        shop.checked = !shop.checked;
+        shop.goodsList.forEach(good=>{
+          good.checked=shop.checked
+        })
+      }
+    },
+    computed: {
+      allSelect: {
+        get() {
+          if (this.cartList) {
+            return this.cartList.every(shop => {
+              return shop.checked;
+            });
+          }
+          return false;
+        },
+        set() {
+
+        }
+      }
     }
-  }
-};
+  };
 </script>
 
 <style>
