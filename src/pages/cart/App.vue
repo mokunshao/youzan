@@ -6,7 +6,7 @@
           <div>
             <div class="js-shop-list shop-list">
               <div class="block block-order block-cart" v-for="shop in cartList" :key="shop.shopId"
-                   >
+              >
                 <div class="header">
                   <div class="select-group js-select-group">
                     <span class="check" :class="{checked:shop.checked}" @click="selectShop(shop)"></span>
@@ -19,22 +19,22 @@
                     href="javascript:;"
                     data-type="cart"
                     class="j-edit-list pull-right c-blue font-size-12 edit-list"
+                    @click="edit(shop)"
                   >
-                    <!---->
-                    编辑
+                    {{shop.editingMsg}}
                   </a>
                 </div>
-                <!---->
                 <div>
                   <ul class="js-list block block-list block-list-cart border-0">
                     <li
                       class="block-item block-item-cart"
                       v-for="good in shop.goodsList "
                       :key="good.id"
+                      :class="{editing:shop.editing}"
                     >
                       <div>
-                        <div class="check-container" >
-                          <span class="check" :class="{checked:good.checked}"  @click="selectGood(shop,good)"></span>
+                        <div class="check-container">
+                          <span class="check" :class="{checked:good.checked}" @click="selectGood(shop,good)"></span>
                         </div>
                         <div class="name-card clearfix">
                           <a
@@ -54,17 +54,16 @@
                             </a>
                             <p class="sku ellipsis">{{good.sku}}</p>
                             <!-- 显示状态 -->
-                            <div class="num">
-                              ×
-                              <span class="num-txt">{{good.num}}</span>
+                            <div class="num" v-show="!shop.editing">
+                              <span class="num-txt">x{{good.num}}</span>
                               <!---->
                             </div>
                             <!-- 编辑状态 -->
-                            <div class="num" style="display: none;">
+                            <div class="num" v-show="shop.editing">
                               <!---->
                               <div class="quantity">
                                 <button type="button" class="minus disabled"></button>
-                                <input type="text" pattern="[0-9]*" class="txt" value="1">
+                                <input type="text" pattern="[0-9]*" class="txt" v-model="good.num">
                                 <button type="button" class="plus"></button>
                                 <div class="response-area response-area-minus"></div>
                                 <div class="response-area response-area-plus"></div>
@@ -139,23 +138,25 @@
             <div style="padding:0;" class="js-bottom-opts bottom-fix">
               <div class="go-shop-tip js-go-shop-tip c-orange font-size-12">你需要分开结算每个店铺的商品哦~</div>
               <div class="bottom-cart clear-fix">
-                <div class="select-all">
+                <div class="select-all" @click="selectAll">
                   <span class="check" :class="{checked:allSelect}"></span> 全选
                 </div>
                 <!-- 显示状态 -->
-                <div class="total-price">
+                <div class="total-price" v-show="!editingShop">
                   合计：¥
-                  <span class="js-total-price" style="color: rgb(255, 102, 0);">684.99</span>
+                  <span class="js-total-price" style="color: rgb(255, 102, 0);">{{totalPrice}}</span>
                   <p class="c-gray-dark">不含运费</p>
                 </div>
                 <button
+                  v-show="!editingShop"
                   href="javascript:;"
                   class="js-go-pay btn btn-orange-dark font-size-14"
-                  disabled
-                >结算 (3)
+                  :disabled="!selectedLists.length"
+                >结算 ({{selectedLists.length}})
                 </button>
                 <!-- 编辑状态 -->
                 <button
+                  v-show="editingShop"
                   href="javascript:;"
                   style="display: none;"
                   disabled="disabled"
@@ -191,7 +192,8 @@
   export default {
     data() {
       return {
-        cartList: null
+        cartList: null,
+        editingShop: null
       };
     },
     mounted() {
@@ -207,8 +209,12 @@
             let list = e.data.cartList;
             list.forEach(shop => {
               shop.checked = true;
+              shop.editing = false;
+              shop.editingMsg = '编辑';
+              shop.removeChecked = false;
               shop.goodsList.forEach(good => {
                 good.checked = true;
+                good.removeChecked = false;
               });
             });
             this.cartList = list;
@@ -222,9 +228,24 @@
       },
       selectShop(shop) {
         shop.checked = !shop.checked;
-        shop.goodsList.forEach(good=>{
-          good.checked=shop.checked
-        })
+        shop.goodsList.forEach(good => {
+          good.checked = shop.checked;
+        });
+      },
+      selectAll() {
+        this.allSelect = !this.allSelect;
+      },
+      edit(shop) {
+        shop.editing = !shop.editing;
+        shop.editingMsg = shop.editing === true ? '完成' : '编辑';
+        this.cartList.forEach((item) => {
+          if (shop.shopId !== item.shopId) {
+            // console.table(item.shopTitle)
+            item.editing = false;
+            item.editingMsg = shop.editing ? '' : '编辑';
+          }
+        });
+        this.editingShop = shop.editing ? shop : null;
       }
     },
     computed: {
@@ -237,9 +258,48 @@
           }
           return false;
         },
-        set() {
-
+        set(newVal) {
+          this.cartList.forEach(shop => {
+            shop.checked = newVal;
+            shop.goodsList.forEach(good => {
+              good.checked = newVal;
+            });
+          });
         }
+      },
+      selectedLists() {
+        if (this.cartList && this.cartList.length) {
+          let arr = [];
+          this.cartList.forEach(shop => {
+            shop.goodsList.forEach(good => {
+              if (good.checked) {
+                arr.push(good);
+              }
+            });
+          });
+          return arr;
+        } else {
+          return [];
+        }
+      },
+      totalPrice() {
+        if (this.selectedLists) {
+          let sum = 0;
+          this.selectedLists.map(item => {
+            sum += item.price * item.num;
+          });
+          return sum;
+        }
+        return 0;
+      },
+      removeLists() {
+
+      },
+      allRemoveSelected:{
+        get(){
+
+        },
+        set(newVal){}
       }
     }
   };
