@@ -159,9 +159,9 @@
                 <button
                   v-show="editingShop"
                   href="javascript:;"
-                  style="display: none;"
-                  disabled="disabled"
+                  :disabled="!willRemoveLists.length"
                   class="j-delete-goods btn font-size-14 btn-red"
+                  @click="batchRemove"
                 >删除
                 </button>
               </div>
@@ -171,21 +171,22 @@
       </div>
     </div>
     <!--<div class="footer" style="min-height: 86px;">-->
-      <!--<div class="copyright">-->
-        <!--<div-->
-          <!--class="ft-copyright"-->
-          <!--style="background-image: url(https://img.yzcdn.cn/upload_files/2016/11/15/147918630760182374.png);"-->
-        <!--&gt;-->
-          <!--<a class="yz-logo" href="https://www.youzan.com/?from_source=support_logo">有赞提供技术支持</a>-->
-        <!--</div>-->
-      <!--</div>-->
+    <!--<div class="copyright">-->
+    <!--<div-->
+    <!--class="ft-copyright"-->
+    <!--style="background-image: url(https://img.yzcdn.cn/upload_files/2016/11/15/147918630760182374.png);"-->
+    <!--&gt;-->
+    <!--<a class="yz-logo" href="https://www.youzan.com/?from_source=support_logo">有赞提供技术支持</a>-->
+    <!--</div>-->
+    <!--</div>-->
     <!--</div>-->
     <div id="0SuefKPV4p" v-show="showRemovePopup"
          style="height: 100%; position: fixed; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.7); z-index: 1000;  opacity: 1;"></div>
     <div id="d2tfiX27YS" v-show="showRemovePopup" class="popout-confirm popout-box"
          style="overflow: hidden; position: absolute; z-index: 1000; top: 50%; left: 50%; transform: translate3d(-50%, -50%, 0px); visibility: visible; border-radius: 4px; background: white; width: 270px; padding: 15px; opacity: 1;">
       <div class="confirm-content font-size-14" style="line-height: 20px; padding: 5px 5px 10px;">
-        你确定要删除吗？
+        <!--你确定要删除吗？-->
+        {{this.removeMsg}}
       </div>
       <hr style="margin: 9px -15px 10px;">
       <div class="btn-2-1" style="width: 47.5%;">
@@ -211,7 +212,8 @@
         cartList: null,
         editingShop: null,
         showRemovePopup: false,
-        willRemoveData: null
+        willRemoveData: null,
+        removeMsg: ''
       };
     },
     mounted() {
@@ -265,7 +267,7 @@
             item.editingMsg = shop.editing ? '' : '编辑';
           }
         });
-        this.editingShop = shop;
+        this.editingShop = shop.editing ? shop : null;
       },
       reduce(good) {
         if (good.num === 1) return;
@@ -279,22 +281,51 @@
         });
       },
       remove(shop, good) {
+        this.removeMsg = '你确定要删除该商品吗？';
         this.showRemovePopup = true;
         this.willRemoveData = {shop, good};
       },
+      batchRemove() {
+        this.removeMsg = `你确定要将所选的 ${this.willRemoveLists.length} 个商品删除吗？`;
+        this.showRemovePopup = true;
+      },
       confirmRemove() {
-        axios.post('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/cart/good/remove', this.willRemoveData).then(() => {
-          this.willRemoveData.shop.goodsList.splice(this.willRemoveData.shop.goodsList.indexOf(this.willRemoveData.good), 1);
-          if (!this.willRemoveData.shop.goodsList.length) {
-            this.cartList.splice(this.cartList.indexOf(this.willRemoveData.shop), 1);
-            this.editingShop = null;
+        if (this.removeMsg === '你确定要删除该商品吗？') {
+          axios.post('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/cart/good/remove', this.willRemoveData).then(() => {
+            this.willRemoveData.shop.goodsList.splice(this.willRemoveData.shop.goodsList.indexOf(this.willRemoveData.good), 1);
+            if (!this.willRemoveData.shop.goodsList.length) {
+              this.cartList.splice(this.cartList.indexOf(this.willRemoveData.shop), 1);
+              this.editingShop = null;
+              this.cartList.forEach(shop => {
+                shop.editingMsg = '编辑';
+              });
+            }
+            this.showRemovePopup = false;
+          });
+        } else {
+          axios.post('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/cart/good/remove', this.willRemoveLists).then(() => {
             this.cartList.forEach(shop => {
+              shop.editing = false;
               shop.editingMsg = '编辑';
+              this.willRemoveLists.forEach(item => {
+                shop.goodsList.forEach(good => {
+                  if (good.id === item.id) {
+                    shop.goodsList.splice(shop.goodsList.indexOf(item), 1);
+                  }
+                });
+              });
             });
-          }
-          this.showRemovePopup = false;
 
-        });
+            this.cartList.forEach(shop => {
+              if (!shop.goodsList.length) {
+                this.cartList.splice(this.cartList.indexOf(shop), 1);
+              }
+            });
+
+            this.showRemovePopup = false;
+            this.editingShop = null;
+          });
+        }
       }
     },
     computed: {
