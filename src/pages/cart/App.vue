@@ -30,8 +30,11 @@
                     <li
                       class="block-item block-item-cart"
                       v-for="good in shop.goodsList "
+                      :ref="good.id"
                       :key="good.id"
                       :class="{editing:shop.editing}"
+                      @touchstart='start($event,good)'
+                      @touchend='end($event,good)'
                     >
                       <div>
                         <div class="check-container" @click="selectGood(shop,good)">
@@ -205,6 +208,7 @@
   import "./cart_base.css";
   import "./cart_trade.css";
   import axios from "axios";
+  import velocity from 'velocity-animate';
 
   export default {
     data() {
@@ -326,6 +330,20 @@
             this.editingShop = null;
           });
         }
+      },
+      start(e, good) {
+        good.startX = e.changedTouches[0].clientX;
+      },
+      end(e, good) {
+        let endX = e.changedTouches[0].clientX;
+        let left = '0';
+        if (good.startX - endX > 100) {
+          left = '-60px';
+        }
+        if (endX - good.startX > 100) {
+          left = '0px';
+        }
+        velocity(this.$refs[`${good.id}`], {left});
       }
     },
     computed: {
