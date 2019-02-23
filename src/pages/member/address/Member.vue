@@ -134,13 +134,12 @@
           </a>
         </div>
         <div class="block block-list list-vertical">
-          <a
+          <router-link
             class="block-item link clearfix ico-setting js-login"
-            href="https://h5.youzan.com/v2/buyer/member/setting"
-            target="_blank"
+            to="/address"
           >
-            <p class="title-info c-black font-size-14">个人设置</p>
-          </a>
+            <p class="title-info c-black font-size-14">收货地址管理</p>
+          </router-link>
           <a
             class="block-item link clearfix ico-help"
             href="http://bbs.youzan.com/home.php?mod=space&amp;do=thread&amp;view=me&amp;order=lastpost&amp;mobile=2&amp;fid=85&amp;filter=common&amp;in_app_type=weixin"
@@ -152,19 +151,13 @@
       </div>
     </div>
   </div>
-  <!--<div class="footer" style="min-height: 86px;">-->
-    <!--<div class="copyright">-->
-      <!--<div class="ft-copyright">-->
-        <!--<a href="https://www.youzan.com/?from_source=support_logo">有赞提供技术支持</a>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
 </template>
 
 <script>
   import "./member_base.css";
   import "./member.css";
-export default {
 
-}
+  export default {
+    name:'Member'
+  };
 </script>

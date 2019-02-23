@@ -13,10 +13,10 @@
 
 <script>
 let navConfig = [
-  { name: "有赞", icon: "icon-home", href: "index.html" },
-  { name: "分类", icon: "icon-category", href: "category.html" },
-  { name: "购物车", icon: "icon-cart", href: "cart.html" },
-  { name: "我", icon: "icon-user", href: "member.html" }
+  { name: "有赞", icon: "icon-home", href: "index" },
+  { name: "分类", icon: "icon-category", href: "category" },
+  { name: "购物车", icon: "icon-cart", href: "cart" },
+  { name: "我", icon: "icon-user", href: "member" }
 ];
 
 export default {
