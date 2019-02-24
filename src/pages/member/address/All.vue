@@ -1,18 +1,18 @@
 <template>
   <div class="container " style="min-height: 597px;">
     <div class="block-list address-list section section-first js-no-webview-block">
-      <a class="block-item js-address-item address-item " @click="toEdit" v-for="address in list"
+      <a class="block-item js-address-item address-item " @click="toEdit(address)" v-for="address in list"
          :key="address.id"
          :class="{'address-item-default':address.isDefault}">
         <div class="address-title">{{address.name}} {{address.phone}}</div>
-        <p>{{address.location}}</p>
+        <p>{{address.provinceName}} {{address.cityName}} {{address.districtName}} {{address.location}}</p>
       </a>
     </div>
     <div v-if="list&&!list.length">
       没有地址，请添加地址。
     </div>
     <div class="block stick-bottom-row center">
-      <router-link class="btn btn-blue js-no-webview-block js-add-address-btn" to='form'>
+      <router-link class="btn btn-blue js-no-webview-block js-add-address-btn" :to='{name:"form",query:{type:"add"}}'>
         新增地址
       </router-link>
     </div>
@@ -35,8 +35,8 @@
       });
     },
     methods: {
-      toEdit() {
-        this.$router.push({path: '/address/form'});
+      toEdit(address) {
+        this.$router.push({name: 'form',query:{type:'edit',id:address.id},params:{instance:address}});
       }
     }
   };

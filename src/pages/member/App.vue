@@ -17,9 +17,9 @@
   const routes = [
     {
       path: '/address', component: Address, children: [
-        {path: 'all', component: All},
-        {path: '', component: All},
-        {path: 'form', component: Form}
+        {path: '', redirect: 'all'},
+        {path: 'all', name: 'all', component: All},
+        {path: 'form', name: "form", component: Form}
       ]
     },
     {path: '/', component: Member},
