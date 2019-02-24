@@ -65,17 +65,19 @@
         instance: this.$route.params.instance,
         addressData,
         cityList: null,
-        districtList: null
+        districtList: null,
+        cityChangeTimes: 0
       };
     },
     mounted() {
-      if (this.type === 'edit') {
+      if (this.type === 'edit' && this.instance) {
         this.provinceValue = this.instance.provinceValue;
         this.cityValue = this.instance.cityValue;
         this.districtValue = this.instance.districtValue;
         this.name = this.instance.name;
         this.phone = this.instance.phone;
         this.location = this.instance.location;
+        this.id = this.instance.id;
       }
     },
     methods: {
@@ -94,39 +96,49 @@
       remove() {
         if (window.confirm('确认删除？')) {
           // axios.post('').then(() => {
-            this.$router.go(-1);
+          this.$router.go(-1);
           // });
         }
       },
       setDefault() {
         // axios.post('').then(() => {
-          this.$router.go(-1);
+        this.$router.go(-1);
         // });
       }
     },
     watch: {
-      provinceValue(val) {
-        if (val === -1) return;
+      provinceValue(val, oldVal) {
+        if (val === -1 || val === '-1') return;
         let index = this.addressData.list.findIndex(item => {
           return item.value === val;
         });
         this.cityList = this.addressData.list[index].children;
-        // this.cityValue = -1;
-        // this.districtValue = -1;
-        if (this.type === 'edit') {
-          this.cityValue = this.instance.cityValue;
+        this.cityValue = -1;
+        this.districtValue = -1;
+        if (this.type === 'edit' && this.instance) {
+          if (oldVal === -1 || oldVal === '-1') {
+            this.cityValue = this.instance.cityValue;
+          }
+        }
+        if (!this.cityValue) {
+          this.cityValue = -1;
         }
       },
-      cityValue(val) {
-        if (val === -1) return;
+      cityValue(val, oldVal) {
+        if (val === -1 || val === '-1') return;
+        this.districtValue = -1;
         let index = this.cityList.findIndex(item => {
           return item.value === val;
         });
         this.districtList = this.cityList[index].children;
-        // this.districtValue = -1;
-        if (this.type === 'edit') {
-
+        if (this.type === 'edit' && this.instance) {
+          if (oldVal === -1 || oldVal === '-1') {
+            if (this.cityChangeTimes === 0) {
+              this.districtValue = this.instance.districtValue;
+            }
+          }
         }
+        this.cityChangeTimes += 1;
       }
     }
   };
