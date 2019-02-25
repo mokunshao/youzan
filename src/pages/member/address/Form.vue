@@ -82,28 +82,30 @@
     },
     methods: {
       save() {
+        let {name, phone, provinceValue, cityValue, districtValue, location} = this;
+        let data = {name, phone, provinceValue, cityValue, districtValue, location};
         if (this.type === 'add') {
-          // axios.post('').then(()=>{
-          this.$router.go(-1);
-          // })
+          axios.post('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/address/add', {data}).then(() => {
+            this.$router.go(-1);
+          });
         }
         if (this.type === 'edit') {
-          // axios.update('').then(()=>{
-          this.$router.go(-1);
-          // })
+          axios.post('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/address/update', {data}).then(() => {
+            this.$router.go(-1);
+          });
         }
       },
       remove() {
         if (window.confirm('确认删除？')) {
-          // axios.post('').then(() => {
-          this.$router.go(-1);
-          // });
+          axios.post('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/address/remove', {id: this.id}).then(() => {
+            this.$router.go(-1);
+          });
         }
       },
       setDefault() {
-        // axios.post('').then(() => {
-        this.$router.go(-1);
-        // });
+        axios.post('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/address/setDefault', {id: this.id}).then(() => {
+          this.$router.go(-1);
+        });
       }
     },
     watch: {
