@@ -20,23 +20,23 @@
 </template>
 
 <script>
-  import axios from 'axios';
 
   export default {
     name: 'All',
-    data() {
-      return {
-        list: null
-      };
+    computed: {
+      list() {
+        return this.$store.state.list;
+      }
     },
     mounted() {
-      axios.get('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/address/list').then(e => {
-        this.list = e.data;
-      });
+      if (!this.list) {
+        this.$store.dispatch('getList');
+
+      }
     },
     methods: {
       toEdit(address) {
-        this.$router.push({name: 'form',query:{type:'edit',id:address.id},params:{instance:address}});
+        this.$router.push({name: 'form', query: {type: 'edit', id: address.id}, params: {instance: address}});
       }
     }
   };

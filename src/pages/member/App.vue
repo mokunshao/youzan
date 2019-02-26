@@ -11,6 +11,7 @@
   import Address from './address/Address.vue';
   import Form from './address/Form.vue';
   import All from './address/All.vue';
+  import store from './store'
 
   Vue.use(VueRouter);
 
@@ -28,7 +29,8 @@
   let router = new VueRouter({routes});
 
   export default {
-    router
+    router,
+    store
   };
 </script>
 

@@ -48,10 +48,14 @@
 
 <script>
   import addressData from './address.json';
-  import axios from 'axios';
 
   export default {
     name: 'Form',
+    computed: {
+      list() {
+        return this.$store.state.list;
+      }
+    },
     data() {
       return {
         name: '',
@@ -82,33 +86,28 @@
     },
     methods: {
       save() {
-        let {name, phone, provinceValue, cityValue, districtValue, location} = this;
-        let data = {name, phone, provinceValue, cityValue, districtValue, location};
+        let {name, phone, provinceValue, cityValue, districtValue, location, id} = this;
+        let data = {name, phone, provinceValue, cityValue, districtValue, location, id};
         if (this.type === 'add') {
-          axios.post('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/address/add', {data}).then(() => {
-            this.$router.go(-1);
-          });
+          this.$store.dispatch('addAddress', {data});
         }
         if (this.type === 'edit') {
-          axios.post('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/address/update', {data}).then(() => {
-            this.$router.go(-1);
-          });
+          this.$store.dispatch('updateAddress', {data});
         }
       },
       remove() {
         if (window.confirm('确认删除？')) {
-          axios.post('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/address/remove', {id: this.id}).then(() => {
-            this.$router.go(-1);
-          });
+          this.$store.dispatch('removeAddress', {id: this.id});
         }
       },
       setDefault() {
-        axios.post('https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/address/setDefault', {id: this.id}).then(() => {
-          this.$router.go(-1);
-        });
+        this.$store.dispatch('setDefault', {id: this.id});
       }
     },
     watch: {
+      list() {
+        this.$router.go(-1);
+      },
       provinceValue(val, oldVal) {
         if (val === -1 || val === '-1') return;
         let index = this.addressData.list.findIndex(item => {
@@ -143,5 +142,6 @@
         this.cityChangeTimes += 1;
       }
     }
-  };
+  }
+  ;
 </script>
