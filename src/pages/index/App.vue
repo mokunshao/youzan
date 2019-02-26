@@ -71,7 +71,7 @@
         </div>
         <div class="js-show-find category-guid" style="display: none;"></div>
       </div>
-      <Footer currentTabIndex="0"/>
+      <Footer :currentTabIndex="0"/>
     </div>
   </div>
 </template>

@@ -167,7 +167,7 @@
         </div>
       </div>
     </div>
-    <Footer currentTabIndex="1"/>
+    <Footer :currentTabIndex="1"/>
   </div>
 </template>
 

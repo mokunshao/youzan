@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-nav">
     <ul>
-      <li :class="{active:tabIndex===index}" v-for="(item,index) in navConfig" :key="index">
+      <li :class="{active:currentTabIndex===index}" v-for="(item,index) in navConfig" :key="index">
         <a :href="item.href">
           <i :class="item.icon"></i>
           <div>{{item.name}}</div>
@@ -26,11 +26,6 @@
       return {
         navConfig
       };
-    },
-    computed: {
-      tabIndex() {
-        return parseInt(this.currentTabIndex);
-      }
     }
   };
 </script>
