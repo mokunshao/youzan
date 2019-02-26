@@ -51,7 +51,6 @@
         <div class="class-category">
           <div id="scroll-main-wrap" class="main-content">
             <div
-              id="scroll-main-content"
               class="js-main-content inner-content"
               style="transform: translate3d(0px, 0px, 0px); "
               v-if="topListIndex===0"
@@ -168,7 +167,7 @@
         </div>
       </div>
     </div>
-    <Footer/>
+    <Footer currentTabIndex="1"/>
   </div>
 </template>
 

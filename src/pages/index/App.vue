@@ -71,84 +71,84 @@
         </div>
         <div class="js-show-find category-guid" style="display: none;"></div>
       </div>
-      <Footer/>
+      <Footer currentTabIndex="0"/>
     </div>
   </div>
 </template>
 
 <script>
-import "../../modules/css/common.css";
-import "./index.css";
-import axios from "axios";
-import { InfiniteScroll } from "mint-ui";
-import Vue from "vue";
-import Footer from "../../components/Footer.vue";
-import Swiper from "../../components/Swiper.vue";
+  import "../../modules/css/common.css";
+  import "./index.css";
+  import axios from "axios";
+  import {InfiniteScroll} from "mint-ui";
+  import Vue from "vue";
+  import Footer from "../../components/Footer.vue";
+  import Swiper from "../../components/Swiper.vue";
 
-Vue.use(InfiniteScroll);
+  Vue.use(InfiniteScroll);
 
-export default {
-  components: {
-    Footer,
-    Swiper
-  },
-  data() {
-    return {
-      list: null,
-      loading: false,
-      pageNum: 0,
-      allLoaded: false,
-      pageSize: 5,
-      bannerList: null
-    };
-  },
-  methods: {
-    getLists() {
-      if (!this.allLoaded) {
-        if (this.pageNum < this.pageSize) {
-          this.loading = true;
-          axios
-            .post(
-              "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/index/hotLists",
-              {
-                pageNum: this.pageNum,
-                pageSize: this.pageSize
-              }
-            )
-            .then(res => {
-              if (this.list) {
-                this.list = this.list.concat(res.data.list);
-              } else {
-                this.list = res.data.list;
-              }
-              this.loading = false;
-            });
-          this.pageNum += 1;
+  export default {
+    components: {
+      Footer,
+      Swiper
+    },
+    data() {
+      return {
+        list: null,
+        loading: false,
+        pageNum: 0,
+        allLoaded: false,
+        pageSize: 5,
+        bannerList: null
+      };
+    },
+    methods: {
+      getLists() {
+        if (!this.allLoaded) {
+          if (this.pageNum < this.pageSize) {
+            this.loading = true;
+            axios
+              .post(
+                "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/index/hotLists",
+                {
+                  pageNum: this.pageNum,
+                  pageSize: this.pageSize
+                }
+              )
+              .then(res => {
+                if (this.list) {
+                  this.list = this.list.concat(res.data.list);
+                } else {
+                  this.list = res.data.list;
+                }
+                this.loading = false;
+              });
+            this.pageNum += 1;
+          }
+        } else {
+          this.allLoaded = true;
         }
-      } else {
-        this.allLoaded = true;
+      },
+      getBanner() {
+        axios
+          .get(
+            "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/index/banner"
+          )
+          .then(res => {
+            this.bannerList = res.data.bannerList;
+          });
       }
     },
-    getBanner() {
-      axios
-        .get(
-          "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/index/banner"
-        )
-        .then(res => {
-          this.bannerList = res.data.bannerList;
-        });
+    mounted() {
+      this.getLists();
+      this.getBanner();
     }
-  },
-  mounted() {
-    this.getLists();
-    this.getBanner();
-  }
-};
+  };
 </script>
 
 <style>
-.nothingLeft {
-  text-align: center;
-  margin: 10px;
-}
+  .nothingLeft {
+    text-align: center;
+    margin: 10px;
+  }
 </style>

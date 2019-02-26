@@ -31,9 +31,6 @@ const store = new Vuex.Store({
       state.list.splice(index, 1);
     },
     setDefault(state, {id}) {
-      // state.list.forEach(item => {
-      //   item.isDefault = item.id === id;
-      // });
       let newList = JSON.parse(JSON.stringify(state.list));
       newList.forEach(item => {
         item.isDefault = item.id === id;
