@@ -1,4 +1,7 @@
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/youzan/'
+    : '/',
   pages: {
     index: {
       entry: "src/pages/index/index.js",
