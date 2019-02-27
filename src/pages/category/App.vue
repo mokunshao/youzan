@@ -223,10 +223,10 @@
           });
       },
       goToSearch() {
-        location.href = `search?keyword=${this.keyword}`;
+        location.href = `search.html?keyword=${this.keyword}`;
       },
       goToSearch2(keyword) {
-        location.href = `search?keyword=${keyword}`;
+        location.href = `search.html?keyword=${keyword}`;
       }
     },
     mounted() {
