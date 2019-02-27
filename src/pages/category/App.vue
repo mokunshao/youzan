@@ -44,7 +44,8 @@
                 class="category-name js-category-nam e"
                 :class="{active:index===topListIndex}"
                 data-cid="-1"
-              >{{item.name}}</li>
+              >{{item.name}}
+              </li>
             </ul>
           </div>
         </div>
@@ -73,7 +74,7 @@
                         </div>
                         <div class="detail">
                           <div class="title">{{item.name}}</div>
-                          <div class="price">￥{{item.price}}</div>
+                          <div class="price">{{item.price|currency}}</div>
                           <div class="recommend">
                             <span>推荐值:</span>
                             <span>{{item.recommend}}</span>
@@ -172,66 +173,68 @@
 </template>
 
 <script>
-import "../../modules/css/common.css";
-import "./category.css";
-import Footer from "../../components/Footer.vue";
-import axios from "axios";
+  import "../../modules/css/common.css";
+  import "./category.css";
+  import Footer from "../../components/Footer.vue";
+  import axios from "axios";
+  import mixins from '../../mixins';
 
-export default {
-  data() {
-    return {
-      topList: null,
-      topListIndex: 0,
-      keyword: null,
-      subList: null,
-      ranking: null
-    };
-  },
-  components: {
-    Footer
-  },
-  methods: {
-    getTopList() {
-      axios
-        .get(
-          "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/category/topList"
-        )
-        .then(e => (this.topList = e.data));
+  export default {
+    data() {
+      return {
+        topList: null,
+        topListIndex: 0,
+        keyword: null,
+        subList: null,
+        ranking: null
+      };
     },
-    getSubList(index) {
-      this.topListIndex = index;
-      if (index === 0) {
-        this.getRanking();
-      } else {
+    components: {
+      Footer
+    },
+    methods: {
+      getTopList() {
         axios
-          .post(
-            "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/category/subList",
-            { index }
+          .get(
+            "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/category/topList"
           )
-          .then(e => (this.subList = e.data.subList));
+          .then(e => (this.topList = e.data));
+      },
+      getSubList(index) {
+        this.topListIndex = index;
+        if (index === 0) {
+          this.getRanking();
+        } else {
+          axios
+            .post(
+              "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/category/subList",
+              {index}
+            )
+            .then(e => (this.subList = e.data.subList));
+        }
+      },
+      getRanking() {
+        axios
+          .get(
+            "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/getRank"
+          )
+          .then(e => {
+            this.ranking = e.data.ranking;
+          });
+      },
+      goToSearch() {
+        location.href = `search?keyword=${this.keyword}`;
+      },
+      goToSearch2(keyword) {
+        location.href = `search?keyword=${keyword}`;
       }
     },
-    getRanking() {
-      axios
-        .get(
-          "https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/getRank"
-        )
-        .then(e => {
-          this.ranking = e.data.ranking;
-        });
+    mounted() {
+      this.getTopList();
+      this.getRanking();
     },
-    goToSearch() {
-      location.href = `search.html?keyword=${this.keyword}`;
-    },
-    goToSearch2(keyword) {
-      location.href = `search.html?keyword=${keyword}`;
-    }
-  },
-  mounted() {
-    this.getTopList();
-    this.getRanking();
-  }
-};
+    mixins: [mixins]
+  };
 </script>
 
 <style>

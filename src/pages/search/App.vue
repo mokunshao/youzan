@@ -46,7 +46,7 @@
                 <div class="detail">
                   <div class="title">{{item.name}}</div>
                   <div class="meta relative">
-                    <span class="price">￥{{item.price}}</span>
+                    <span class="price">{{item.price| currency}}</span>
                     <span class="ship pull-right" v-if="item.freeShipping">包邮</span>
                   </div>
                 </div>
@@ -67,47 +67,49 @@
 </template>
 
 <script>
-import "./search.css";
-import "../../modules/css/common.css";
-import qs from "qs";
-import axios from "axios";
-import velocity from "velocity-animate";
+  import "./search.css";
+  import "../../modules/css/common.css";
+  import qs from "qs";
+  import axios from "axios";
+  import velocity from "velocity-animate";
+  import mixins from '../../mixins';
 
-let { keyword } = qs.parse(location.search.substring(1));
+  let {keyword} = qs.parse(location.search.substring(1));
 
-export default {
-  data() {
-    return {
-      keyword,
-      searchResult: null,
-      isShowGoToTop: false
-    };
-  },
-  mounted() {
-    this.getSearchReasult(this.keyword);
-    window.addEventListener("scroll", this.move);
-  },
-  methods: {
-    getSearchReasult(keyword) {
-      axios
-        .get(
-          `https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/search?keyword=${keyword}`
-        )
-        .then(e => {
-          this.searchResult = e.data;
-        });
+  export default {
+    data() {
+      return {
+        keyword,
+        searchResult: null,
+        isShowGoToTop: false
+      };
     },
-    move() {
-      if (window.scrollY > 50) {
-        this.isShowGoToTop = true;
-      } else {
-        this.isShowGoToTop = false;
+    mounted() {
+      this.getSearchReasult(this.keyword);
+      window.addEventListener("scroll", this.move);
+    },
+    methods: {
+      getSearchReasult(keyword) {
+        axios
+          .get(
+            `https://nei.netease.com/api/apimock/dd43479bc45ee7491c66cc246d9c46b8/search?keyword=${keyword}`
+          )
+          .then(e => {
+            this.searchResult = e.data;
+          });
+      },
+      move() {
+        if (window.scrollY > 50) {
+          this.isShowGoToTop = true;
+        } else {
+          this.isShowGoToTop = false;
+        }
+      },
+      goToTop() {
+        // window.scrollTo(0, 0);
+        velocity(document.body, "scroll", {duration: 1000});
       }
     },
-    goToTop() {
-      // window.scrollTo(0, 0);
-      velocity(document.body, "scroll", { duration: 1000 });
-    }
-  }
-};
+    mixins: [mixins]
+  };
 </script>

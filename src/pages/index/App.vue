@@ -58,7 +58,7 @@
                   </div>
                   <div class="detail">
                     <div class="title">{{item.name}}</div>
-                    <div class="price">￥{{item.price}}</div>
+                    <div class="price">{{item.price | currency}}</div>
                   </div>
                 </a>
               </div>
@@ -84,6 +84,7 @@
   import Vue from "vue";
   import Footer from "../../components/Footer.vue";
   import Swiper from "../../components/Swiper.vue";
+  import mixins from '../../mixins';
 
   Vue.use(InfiniteScroll);
 
@@ -142,7 +143,8 @@
     mounted() {
       this.getLists();
       this.getBanner();
-    }
+    },
+    mixins: [mixins]
   };
 </script>
 
