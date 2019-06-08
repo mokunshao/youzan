@@ -317,7 +317,7 @@
                 <dd class="sku-quantity-contaienr">
                   <dl class="clearfix">
                     <div class="quantity">
-                      <button class="minus disabled" type="button" disabled="skuNum===1"></button>
+                      <button class="minus" :class="skuNum===1?'disabled':''" type="button" :disabled="skuNum===1"></button>
                       <input type="text" class="txt" pattern="[0-9]*" v-model="skuNum">
                       <button class="plus" type="button"></button>
                       <div class="response-area response-area-minus" @click="changeSkuNum(-1)"></div>
@@ -433,7 +433,7 @@ export default {
       this.showSku = true;
     },
     changeSkuNum(num) {
-      if (num < 0 && this.skuNum === 0) return;
+      if (num < 0 && this.skuNum === 1) return;
       this.skuNum += num;
     },
     addCart() {
