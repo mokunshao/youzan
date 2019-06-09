@@ -256,16 +256,18 @@ only screen and (min-device-pixel-ratio:1.5) {
 }
 
 .swiper-wp8-horizontal {
-  -ms-touch-action: pan-y
+  -ms-touch-action: pan-y;
+  touch-action: pan-y
 }
 
 .swiper-wp8-vertical {
-  -ms-touch-action: pan-x
+  -ms-touch-action: pan-x;
+  touch-action: pan-x;
 }
 
 .swiper-pagination {
   margin: 0;
-  text-align: right;
+  /* text-align: right; */
   position: absolute;
   bottom: 5px;
   width: 100%;
