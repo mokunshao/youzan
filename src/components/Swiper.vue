@@ -28,9 +28,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.swiper-slide a {
-  width: 100%;
-}
-</style>
