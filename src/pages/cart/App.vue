@@ -332,6 +332,7 @@
         }
       },
       start(e, good) {
+        console.log(good)
         good.startX = e.changedTouches[0].clientX;
       },
       end(e, good) {
